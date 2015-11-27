@@ -59,6 +59,7 @@ typedef NS_ENUM(NSInteger, _ScrollingDirection) {
                                        initWithTarget:self
                                        action:@selector(handleLongPressGesture:)];
         [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
+        _longPressGestureRecognizer.delegate = self;
         
         _panPressGestureRecognizer = [[UIPanGestureRecognizer alloc]
                                       initWithTarget:self action:@selector(handlePanGesture:)];
