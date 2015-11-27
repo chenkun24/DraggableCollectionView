@@ -59,6 +59,7 @@ typedef NS_ENUM(NSInteger, _ScrollingDirection) {
                                        initWithTarget:self
                                        action:@selector(handleLongPressGesture:)];
         [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
+        _longPressGestureRecognizer.delegate = self;
         
         _panPressGestureRecognizer = [[UIPanGestureRecognizer alloc]
                                       initWithTarget:self action:@selector(handlePanGesture:)];
@@ -131,6 +132,8 @@ typedef NS_ENUM(NSInteger, _ScrollingDirection) {
     }
 }
 
+#pragma mark - gesture delegate
+
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     if([gestureRecognizer isEqual:_panPressGestureRecognizer]) {
@@ -150,6 +153,14 @@ typedef NS_ENUM(NSInteger, _ScrollingDirection) {
     }
     
     return NO;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
+    CGPoint touchPoint = [touch locationInView:_collectionView];
+    if (![_collectionView indexPathForItemAtPoint:touchPoint]){
+        return NO;
+    }
+    return YES;
 }
 
 - (NSIndexPath *)indexPathForItemClosestToPoint:(CGPoint)point
